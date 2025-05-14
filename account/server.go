@@ -31,3 +31,21 @@ func (s *grpcServer) GetAccount(ctx context.Context, r *pb.GetAccountRequest) (*
 		},
 	}, nil
 }
+
+func (s *grpcServer) GetAccounts(ctx context.Context, r *pb.GetAccountsRequest) (*pb.GetAccountsResponse, error) {
+	res, err := s.service.GetAccounts(ctx, r.Skip, r.Take)
+	if err != nil {
+		return nil, err
+	}
+	accounts := []*pb.Account{}
+	for _, p := range res {
+		accounts = append(
+			accounts,
+			&pb.Account{
+				Id:   p.ID,
+				Name: p.Name,
+			},
+		)
+	}
+	return &pb.GetAccountsResponse{Accounts: accounts}, nil
+}
