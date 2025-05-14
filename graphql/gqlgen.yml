@@ -1,5 +1,4 @@
-schema: schema.graphql
-
+schema: github.com/AmirMohammadKomijanii/Golang-eCommerce/schema.graphql
 models:
   Account:
     model: github.com/AmirMohammadKomijanii/Golang-eCommerce/graphql.Account
