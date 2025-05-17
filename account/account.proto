@@ -1,9 +1,8 @@
-syntax = "proto3"
-
-package pb;
-
 syntax = "proto3";
 package pb;
+
+
+option go_package = "github.com/AmirMohammadKomijanii/Golang-eCommercet/pb";
 
 message Account {
     string id = 1;
