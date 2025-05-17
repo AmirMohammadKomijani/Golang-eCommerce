@@ -1,4 +1,4 @@
-module github.com/AmirMohammadKomijanii/Golang-eCommerce
+module github.com/AmirMohammadKomijani/Golang-eCommerce
 
 go 1.23.0
 
@@ -7,7 +7,9 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/lib/pq v1.10.9
 	github.com/segmentio/ksuid v1.0.4
+	github.com/tinrab/retry v1.0.0
 	google.golang.org/grpc v1.72.1
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
@@ -22,5 +24,4 @@ require (
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250218202821-56aae31c358a // indirect
-	google.golang.org/protobuf v1.36.6 // indirect
 )
