@@ -95,3 +95,17 @@ func (r *elasticRepository) GetProductByID(ctx context.Context, id string) (*Pro
 		Price:       p.Price,
 	}, err
 }
+
+func (r *elasticRepository) PutProduct(ctx context.Context, p Product) error {
+	_, err := r.client.Index().
+		Index("catalog").
+		Type("product").
+		Id(p.ID).
+		BodyJson(productDocument{
+			Name:        p.Name,
+			Description: p.Description,
+			Price:       p.Price,
+		}).
+		Do(ctx)
+	return err
+}
