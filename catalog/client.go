@@ -3,6 +3,7 @@ package catalog
 import (
 	"context"
 
+	"github.com/AmirMohammadKomijani/Golang-eCommerce/catalog/pb"
 	"google.golang.org/grpc"
 )
 
