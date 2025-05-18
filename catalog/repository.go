@@ -2,7 +2,9 @@ package catalog
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"log"
 
 	elastic "gopkg.in/olivere/elastic.v5"
 )
@@ -42,4 +44,54 @@ func NewElasticRepository(url string) (Repository, error) {
 }
 
 func (r *elasticRepository) Close() {
+}
+
+func (r *elasticRepository) ListProducts(ctx context.Context, skip, take uint64) ([]Product, error) {
+	res, err := r.client.Search().
+		Index("catalog").
+		Type("product").
+		Query(elastic.NewMatchAllQuery()).
+		From(int(skip)).Size(int(take)).
+		Do(ctx)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	products := []Product{}
+	for _, hit := range res.Hits.Hits {
+		p := productDocument{}
+		if err = json.Unmarshal(*hit.Source, &p); err == nil {
+			products = append(products, Product{
+				ID:          hit.Id,
+				Name:        p.Name,
+				Description: p.Description,
+				Price:       p.Price,
+			})
+		}
+	}
+	return products, err
+}
+
+func (r *elasticRepository) GetProductByID(ctx context.Context, id string) (*Product, error) {
+	res, err := r.client.Get().
+		Index("catalog").
+		Type("product").
+		Id(id).
+		Do(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if !res.Found {
+		return nil, ErrNotFound
+	}
+	p := productDocument{}
+	if err = json.Unmarshal(*res.Source, &p); err != nil {
+		return nil, err
+	}
+	return &Product{
+		ID:          id,
+		Name:        p.Name,
+		Description: p.Description,
+		Price:       p.Price,
+	}, err
 }
