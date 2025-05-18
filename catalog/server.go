@@ -6,6 +6,8 @@ import (
 	"log"
 	"net"
 
+	"github.com/AmirMohammadKomijani/Golang-eCommerce/catalog/pb"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
