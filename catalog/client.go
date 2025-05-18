@@ -1,6 +1,10 @@
 package catalog
 
-import "google.golang.org/grpc"
+import (
+	"context"
+
+	"google.golang.org/grpc"
+)
 
 type Client struct {
 	conn    *grpc.ClientConn
@@ -18,4 +22,24 @@ func NewClient(url string) (*Client, error) {
 
 func (c *Client) Close() {
 	c.conn.Close()
+}
+
+func (c *Client) PostProduct(ctx context.Context, name, description string, price float64) (*Product, error) {
+	r, err := c.service.PostProduct(
+		ctx,
+		&pb.PostProductRequest{
+			Name:        name,
+			Description: description,
+			Price:       price,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &Product{
+		ID:          r.Product.Id,
+		Name:        r.Product.Name,
+		Description: r.Product.Description,
+		Price:       r.Product.Price,
+	}, nil
 }
