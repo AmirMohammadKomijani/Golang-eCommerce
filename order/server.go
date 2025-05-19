@@ -8,9 +8,9 @@ import (
 	"log"
 	"net"
 
-	account "github.com/akhilsharma90/go-graphql-microservice/account"
-	catalog "github.com/akhilsharma90/go-graphql-microservice/catalog"
-	"github.com/akhilsharma90/go-graphql-microservice/order/pb"
+	account "github.com/AmirMohammadKomijani/Golang-eCommerce/account"
+	catalog "github.com/AmirMohammadKomijani/Golang-eCommerce/catalog"
+	"github.com/AmirMohammadKomijani/Golang-eCommerce/order/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
