@@ -37,16 +37,67 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Account() AccountResolver
+	Mutation() MutationResolver
+	Query() QueryResolver
 }
 
 type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Account struct {
+		ID     func(childComplexity int) int
+		Name   func(childComplexity int) int
+		Orders func(childComplexity int) int
+	}
+
+	Mutation struct {
+		CreateAccount func(childComplexity int, account AccountInput) int
+		CreateOrder   func(childComplexity int, order OrderInput) int
+		CreateProduct func(childComplexity int, product ProductInput) int
+	}
+
+	Order struct {
+		CreatedAt  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Products   func(childComplexity int) int
+		TotalPrice func(childComplexity int) int
+	}
+
+	OrderedProduct struct {
+		Description func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Name        func(childComplexity int) int
+		Price       func(childComplexity int) int
+		Quantity    func(childComplexity int) int
+	}
+
+	Product struct {
+		Description func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Name        func(childComplexity int) int
+		Price       func(childComplexity int) int
+	}
+
 	Query struct {
+		Accounts func(childComplexity int, pagination *PaginationInput, id *string) int
+		Products func(childComplexity int, pagination *PaginationInput, query *string, id *string) int
 	}
 }
 
+type AccountResolver interface {
+	Orders(ctx context.Context, obj *Account) ([]*Order, error)
+}
+type MutationResolver interface {
+	CreateAccount(ctx context.Context, account AccountInput) (*Account, error)
+	CreateProduct(ctx context.Context, product ProductInput) (*Product, error)
+	CreateOrder(ctx context.Context, order OrderInput) (*Order, error)
+}
+type QueryResolver interface {
+	Accounts(ctx context.Context, pagination *PaginationInput, id *string) ([]*Account, error)
+	Products(ctx context.Context, pagination *PaginationInput, query *string, id *string) ([]*Product, error)
+}
 type executableSchema struct {
 	schema     *ast.Schema
 	resolvers  ResolverRoot
